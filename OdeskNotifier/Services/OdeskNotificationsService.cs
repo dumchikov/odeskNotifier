@@ -20,6 +20,8 @@ namespace OdeskNotifier.Services
             if (newJobs.Any())
             {
                 _mail.Send("Odesk notification.", newJobs);
+                var logger = NLog.LogManager.GetCurrentClassLogger();
+                logger.Info("Mail sended.");
                 PreviousJobItems = data;
             }
         }
