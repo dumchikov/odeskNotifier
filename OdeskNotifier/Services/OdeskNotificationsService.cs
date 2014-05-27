@@ -15,12 +15,15 @@ namespace OdeskNotifier.Services
 
         public void Notify()
         {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
             var data = _odeskRssReader.GetData();
+            logger.Info("Data has been retrieved.");
+
             var newJobs = data.Except(PreviousJobItems).ToList();
             if (newJobs.Any())
             {
                 _mail.Send("Odesk notification.", newJobs);
-                var logger = NLog.LogManager.GetCurrentClassLogger();
+                
                 logger.Info("Mail sended.");
                 PreviousJobItems = data;
             }
