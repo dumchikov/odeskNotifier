@@ -1,8 +1,22 @@
-﻿@{
+﻿@model IEnumerable<Tuple<string, IList<ConsoleApplication3.Entities.OdeskJobItem>>>
+@{
     ViewBag.Title = "Home Page";
 }
 
 <h2>@ViewBag.Message</h2>
-<p>
-    To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-</p>
+@foreach (var m in Model)
+{
+    <h3>@m.Item1</h3>
+    <table style="width: 100%">
+        @foreach (var i in m.Item2)
+        {
+            <tr>
+                <td>@i.PublishDate</td>
+                <td>@i.Title</td>
+                <td><a href="@i.Link">Link</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+}

@@ -1,20 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using ConsoleApplication3.Entities;
 using OdeskNotifier.Services;
 
 namespace OdeskNotifier.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info("Index page has been loaded.");
+        private readonly OdeskRssReader _odeskRssReader = new OdeskRssReader();
 
-            var scheduler = new Sheduler();
-            var notificationService = new OdeskNotificationsService();
-            scheduler.RunProcessByTime(DateTime.Now.AddMinutes(1), notificationService.Notify);
-            return View();
+        public ActionResult Index(string query)
+        {
+            var queries = new[]
+                {
+                    ".net-framework",
+                    "asp.net",
+                    "javascript",
+                    "html",
+                    "angularjs"
+                }.OrderBy(x => x);
+
+
+            List<Tuple<string, IList<OdeskJobItem>>> model = queries
+                .Select(x => Tuple.Create(x, _odeskRssReader.GetData(x)))
+                .ToList();
+
+            return View(model);
         }
     }
 }

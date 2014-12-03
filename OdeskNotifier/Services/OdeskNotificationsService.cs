@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ConsoleApplication3.Entities;
 
@@ -16,7 +15,7 @@ namespace OdeskNotifier.Services
         public void Notify()
         {
             var logger = NLog.LogManager.GetCurrentClassLogger();
-            var data = _odeskRssReader.GetData();
+            var data = _odeskRssReader.GetData("");
             logger.Info("Data has been retrieved.");
 
             var newJobs = data.Except(PreviousJobItems).ToList();

@@ -12,9 +12,9 @@ namespace OdeskNotifier.Services
     {
         private readonly OdeskSettings _settings = new OdeskSettings();
 
-        public IList<OdeskJobItem> GetData()
+        public IList<OdeskJobItem> GetData(string query)
         {
-            var reader = XmlReader.Create(this._settings.RssUrl);
+            var reader = XmlReader.Create(string.Concat(this._settings.RssUrl, query));
             var feed = SyndicationFeed.Load(reader);
 
             if (feed != null)
@@ -52,7 +52,7 @@ namespace OdeskNotifier.Services
                 }
                 else
                 {
-                    text = agoTime.Minutes!= 0 ? string.Format("{0} minutes", agoTime.Minutes) : string.Format("{0} seconds", agoTime.Seconds);
+                    text = agoTime.Minutes!= 0 ? string.Format("RECENT! {0} minutes", agoTime.Minutes) : string.Format("{0} seconds", agoTime.Seconds);
                 }
             }
             
